@@ -1,0 +1,52 @@
+Master
+wget https://apt.puppetlabs.com/puppet6-re...
+
+dpkg -i puppet6-release-bionic.deb
+
+apt update
+
+apt install -y puppetserver
+
+vi /etc/puppetlabs/puppet/puppet.conf
+
+[master]
+
+dns_alt_names = hostname
+
+[main]
+
+certname = hostname
+
+server = hostname
+
+
+sudo /opt/puppetlabs/bin/puppetserver ca setup
+
+ systemctl start puppetserver
+ 
+ 
+ 
+ [AGENT]
+ 
+ wget https://apt.puppetlabs.com/puppet6-re...
+
+dpkg -i puppet6-release-bionic.deb
+apt update
+
+apt install -y puppet-agent
+
+gedit /etc/puppetlabs/puppet/puppet.conf
+
+[main]
+
+certname = puppetagent
+
+server = master hostname
+
+environment = production
+
+runinterval = 15m
+
+
+
+sudo /opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true
